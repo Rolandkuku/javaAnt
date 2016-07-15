@@ -40,12 +40,42 @@ class AntPlayground extends JPanel {
     }
 
     public void paintComponent(Graphics g) {
-        g.setColor(Color.BLACK);
-        g.drawRect(
-                this.simulation.getAnt().getPosX(),
-                this.simulation.getAnt().getPosY(),
+        AntHill antHill = this.simulation.getAntHill();
+        Ant ant = this.simulation.getAnt();
+        BunchOfFood bunchOfFood = this.simulation.getBunchOfFood();
+        Obstacle obstacle = this.simulation.getObstacle();
+
+        // AntHill
+        g.setColor(Color.GREEN);
+        g.fillRect(
+                antHill.getPosX(),
+                antHill.getPosY(),
+                50,
+                50
+        );
+        // Bunch of Food
+        g.setColor(Color.BLUE);
+        g.fillRect(
+                bunchOfFood.getPosX(),
+                bunchOfFood.getPosY(),
+                30,
+                30
+        );
+        // Obstacle
+        g.setColor(Color.RED);
+        g.fillRect(
+                obstacle.getPosX(),
+                obstacle.getPosY(),
                 20,
                 20
+        );
+        // Ant
+        g.setColor(Color.BLACK);
+        g.fillOval(
+                ant.getPosX(),
+                ant.getPosY(),
+                5,
+                5
         );
     }
 }

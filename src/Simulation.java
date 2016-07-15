@@ -8,11 +8,11 @@ public class Simulation {
     private Obstacle obstacle;
 
     public Simulation() {
-        this.size = 150;
+        this.size = 500;
         this.ant = new Ant(false, 10, 10, this.size);
-        this.bunchOfFood = new BunchOfFood(100, 100, 100);
+        this.bunchOfFood = new BunchOfFood(400, 400, 100);
         this.antHill = new AntHill(10, 100, 0);
-        this.obstacle = new Obstacle(4, 50, 50);
+        this.obstacle = new Obstacle(200, 200, 50);
     }
 
     public int getSize() {
@@ -103,21 +103,21 @@ class Ant {
 
         if (Math.round(randX) == 0) {
             if (this.posX >= 0) {
-                this.posX -= 10;
+                this.posX -= 5;
             }
         } else if (Math.round(randX) == 2) {
-            if (this.posX <= (this.worldSize - 20)) { // panel size - ant size
-                this.posX += 10;
+            if (this.posX <= (this.worldSize - 5)) { // panel size - ant size
+                this.posX += 5;
             }
         }
 
         if (Math.round(randY) == 0) {
             if (this.posY >= 0) {
-                this.posY -= 10;
+                this.posY -= 5;
             }
         } else if (Math.round(randY) == 2) {
-            if (this.posY <= (this.worldSize - 20)) { // panel size - ant size
-                this.posY += 10;
+            if (this.posY <= (this.worldSize - 5)) { // panel size - ant size
+                this.posY += 5;
             }
         }
     }
