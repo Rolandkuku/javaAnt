@@ -2,13 +2,19 @@ import javax.swing.*;
 import java.awt.*;
 
 public class AntHillView {
-    Simulation simulation = new Simulation();
-    AntWorld antWorld = new AntWorld(simulation.getSize());
-    AntPlayground antPlayground = new AntPlayground(simulation.getSize());
+    Simulation simulation;
+    AntWorld antWorld;
+    AntPlayground antPlayground;
 
-    public AntHillView() {
+    public AntHillView(Simulation simulation) {
+        this.simulation = simulation;
+        this.antWorld = new AntWorld(simulation.getSize());
+        this.antPlayground = new AntPlayground(simulation);
         this.antWorld.setContentPane(this.antPlayground);
         this.antWorld.setVisible(true);
+    }
+
+    public void paint() {
         antPlayground.repaint();
     }
 }
@@ -23,14 +29,23 @@ class AntWorld extends JFrame {
 }
 
 class AntPlayground extends JPanel {
+    private Simulation simulation;
 
-    public AntPlayground (int size) {
+    public AntPlayground (Simulation simulation) {
+        this.simulation = simulation;
         this.setLayout(new FlowLayout());
-        this.setPreferredSize(new Dimension(size, size));
+        this.setPreferredSize(new Dimension(
+                this.simulation.getSize(),
+                this.simulation.getSize()));
     }
 
     public void paintComponent(Graphics g) {
         g.setColor(Color.BLACK);
-        g.drawRect(20, 20, 20, 20);
+        g.drawRect(
+                this.simulation.getAnt().getPosX(),
+                this.simulation.getAnt().getPosY(),
+                20,
+                20
+        );
     }
 }

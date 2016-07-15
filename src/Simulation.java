@@ -1,3 +1,4 @@
+import java.util.concurrent.ThreadLocalRandom;
 
 public class Simulation {
     private int size;
@@ -8,7 +9,7 @@ public class Simulation {
 
     public Simulation() {
         this.size = 150;
-        this.ant = new Ant(false, 10, 10);
+        this.ant = new Ant(false, 10, 10, this.size);
         this.bunchOfFood = new BunchOfFood(100, 100, 100);
         this.antHill = new AntHill(10, 100, 0);
         this.obstacle = new Obstacle(4, 50, 50);
@@ -53,17 +54,23 @@ public class Simulation {
     public void setObstacle(Obstacle obstacle) {
         this.obstacle = obstacle;
     }
+
+    public void nextStep() {
+        this.ant.randomDirection();
+    }
 }
 
 class Ant {
     private boolean carryingFood = false;
     private int posY;
     private int posX;
+    private int worldSize;
 
-    public Ant(boolean carryingFood, int posY, int posX) {
+    public Ant(boolean carryingFood, int posY, int posX, int worldSize) {
         this.carryingFood = carryingFood;
         this.posY = posY;
         this.posX = posX;
+        this.worldSize = worldSize;
     }
 
     public int getPosY() {
@@ -88,6 +95,31 @@ class Ant {
 
     public void setPosX(int posX) {
         this.posX = posX;
+    }
+
+    public void randomDirection() {
+        double randY = ThreadLocalRandom.current().nextInt(0, 2 + 1);
+        double randX = ThreadLocalRandom.current().nextInt(0, 2 + 1);
+
+        if (Math.round(randX) == 0) {
+            if (this.posX >= 0) {
+                this.posX -= 10;
+            }
+        } else if (Math.round(randX) == 2) {
+            if (this.posX <= (this.worldSize - 20)) { // panel size - ant size
+                this.posX += 10;
+            }
+        }
+
+        if (Math.round(randY) == 0) {
+            if (this.posY >= 0) {
+                this.posY -= 10;
+            }
+        } else if (Math.round(randY) == 2) {
+            if (this.posY <= (this.worldSize - 20)) { // panel size - ant size
+                this.posY += 10;
+            }
+        }
     }
 
 }
