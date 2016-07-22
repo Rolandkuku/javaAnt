@@ -1,3 +1,6 @@
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Simulation {
@@ -9,7 +12,7 @@ public class Simulation {
 
     public Simulation() {
         this.size = 500;
-        this.ant = new Ant(false, 10, 10, this.size);
+        this.ant = new Ant(false, 250, 250, this.size);
         this.bunchOfFood = new BunchOfFood(400, 400, 100);
         this.antHill = new AntHill(10, 100, 0);
         this.obstacle = new Obstacle(200, 200, 50);
@@ -65,6 +68,7 @@ class Ant {
     private int posY;
     private int posX;
     private int worldSize;
+    private ArrayList<Coordinates> visitedCoordinates = new ArrayList<>();
 
     public Ant(boolean carryingFood, int posY, int posX, int worldSize) {
         this.carryingFood = carryingFood;
@@ -100,24 +104,32 @@ class Ant {
     public void randomDirection() {
         double randY = ThreadLocalRandom.current().nextInt(0, 2 + 1);
         double randX = ThreadLocalRandom.current().nextInt(0, 2 + 1);
+        Coordinates newCoordinates = new Coordinates();
 
         if (Math.round(randX) == 0) {
-            if (this.posX >= 0) {
-                this.posX -= 5;
-            }
+            newCoordinates.setX(this.posX - 1);
         } else if (Math.round(randX) == 2) {
-            if (this.posX <= (this.worldSize - 5)) { // panel size - ant size
-                this.posX += 5;
-            }
+            newCoordinates.setX(this.posX + 1);
         }
 
         if (Math.round(randY) == 0) {
-            if (this.posY >= 0) {
-                this.posY -= 5;
-            }
+            newCoordinates.setY(this.posY - 1);
         } else if (Math.round(randY) == 2) {
-            if (this.posY <= (this.worldSize - 5)) { // panel size - ant size
-                this.posY += 5;
+            newCoordinates.setY(this.posY + 1);
+        }
+        if (!this.visitedCoordinates.contains(newCoordinates)) { // If location has not been visited yet
+            System.out.printf("Not visited\n");
+            if (newCoordinates.getX() > 5 && newCoordinates.getX() <= this.worldSize - 5) {
+                this.setPosX(newCoordinates.getX());
+            }
+            if (newCoordinates.getY() > 5 && newCoordinates.getY() <= this.worldSize - 5) {
+                this.setPosY(newCoordinates.getY());
+            }
+            System.out.printf("X : " + this.getPosX() + "\n");
+            System.out.printf("Y : " + this.getPosY() + "\n");
+            this.visitedCoordinates.add(newCoordinates);
+            for (Coordinates coor: visitedCoordinates) {
+                System.out.printf(coor.getX() + " - " + coor.getY() + "\n");
             }
         }
     }
@@ -245,5 +257,45 @@ class Obstacle {
 
     public void setSize(int size) {
         this.size = size;
+    }
+}
+
+class Coordinates {
+    private int x;
+    private int y;
+
+    public int getX() {
+        return x;
+    }
+
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public void setY(int y) {
+        this.y = y;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Coordinates that = (Coordinates) o;
+
+        if (x != that.x) return false;
+        return y == that.y;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = x;
+        result = 31 * result + y;
+        return result;
     }
 }

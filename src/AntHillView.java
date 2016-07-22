@@ -2,9 +2,9 @@ import javax.swing.*;
 import java.awt.*;
 
 public class AntHillView {
-    Simulation simulation;
-    AntWorld antWorld;
-    AntPlayground antPlayground;
+    private Simulation simulation;
+    private AntWorld antWorld;
+    private AntPlayground antPlayground;
 
     public AntHillView(Simulation simulation) {
         this.simulation = simulation;
