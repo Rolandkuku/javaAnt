@@ -11,9 +11,9 @@ public class Simulation {
     private Obstacle obstacle;
 
     public Simulation() {
-        this.size = 500;
+        this.size = 400;
         this.ant = new Ant(false, 250, 250, this.size);
-        this.bunchOfFood = new BunchOfFood(400, 400, 100);
+        this.bunchOfFood = new BunchOfFood(300, 300, 100);
         this.antHill = new AntHill(10, 100, 0);
         this.obstacle = new Obstacle(200, 200, 50);
     }
@@ -107,30 +107,25 @@ class Ant {
         Coordinates newCoordinates = new Coordinates();
 
         if (Math.round(randX) == 0) {
-            newCoordinates.setX(this.posX - 1);
+            newCoordinates.setX(this.posX - 5);
         } else if (Math.round(randX) == 2) {
-            newCoordinates.setX(this.posX + 1);
+            newCoordinates.setX(this.posX + 5);
         }
 
         if (Math.round(randY) == 0) {
-            newCoordinates.setY(this.posY - 1);
+            newCoordinates.setY(this.posY - 5);
         } else if (Math.round(randY) == 2) {
-            newCoordinates.setY(this.posY + 1);
+            newCoordinates.setY(this.posY + 5);
         }
-        if (!this.visitedCoordinates.contains(newCoordinates)) { // If location has not been visited yet
-            System.out.printf("Not visited\n");
+        //!this.visitedCoordinates.contains(newCoordinates)
+        if (true) { // If location has not been visited yet
             if (newCoordinates.getX() > 5 && newCoordinates.getX() <= this.worldSize - 5) {
                 this.setPosX(newCoordinates.getX());
             }
             if (newCoordinates.getY() > 5 && newCoordinates.getY() <= this.worldSize - 5) {
                 this.setPosY(newCoordinates.getY());
             }
-            System.out.printf("X : " + this.getPosX() + "\n");
-            System.out.printf("Y : " + this.getPosY() + "\n");
             this.visitedCoordinates.add(newCoordinates);
-            for (Coordinates coor: visitedCoordinates) {
-                System.out.printf(coor.getX() + " - " + coor.getY() + "\n");
-            }
         }
     }
 
