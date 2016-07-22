@@ -1,4 +1,6 @@
 import java.awt.*;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -16,12 +18,8 @@ public class Simulation {
     public Simulation() {
         this.size = 300;
         this.ant = new Ant(false, new Point(150, 150), this.size);
-        this.bunchOfFood = new BunchOfFood(new Point(160, 160), 100);
-        this.foodArea = new ItemArea(
-                new Point(this.bunchOfFood.getPosition()),
-                30
-        );
-        this.antHill = new AntHill(new Point(10, 100), 0);
+        this.bunchOfFood = new BunchOfFood(new Point(170, 170), 30);
+        this.antHill = new AntHill(new Point(10, 100), 0, 50);
         this.obstacle = new Obstacle(100, 100, 50);
     }
 
@@ -72,10 +70,16 @@ public class Simulation {
         // If the ant has found any food, it goes back to the antHill
         if (this.ant.isCarryingFood()) {
             this.ant.goBackHome(this.antHill.getPosition());
+            if (this.antHill.getArea().contains(this.ant.getPosition())) {
+                this.antHill.addFood();
+                this.ant.setCarryingFood(false);
+            }
         } else {
             // If not, it goes around randomly
             this.ant.lookForFood();
-            if (this.foodArea.getArea().contains(this.ant.getPosition())) {
+            if (this.bunchOfFood.getArea().contains(this.ant.getPosition())) {
+                this.bunchOfFood.removeFood();
+                this.bunchOfFood.setSize();
                 this.ant.setCarryingFood(true);
             }
         }
@@ -117,8 +121,6 @@ class Ant {
     public void goBackHome(Point antHillPosition) {
         Point newCoordinates = this.randomDirection();
         if (newCoordinates.distanceSq(antHillPosition) < this.position.distanceSq(antHillPosition)) {
-            System.out.printf("Old distance : " + this.position.distanceSq(antHillPosition) + "\n");
-            System.out.printf("New distance : " + newCoordinates.distanceSq(antHillPosition) + "\n");
             this.position.setLocation(newCoordinates);
         }
     }
@@ -133,8 +135,8 @@ class Ant {
     }
 
     public Point randomDirection() {
-        double randY = ThreadLocalRandom.current().nextInt(0, 2 + 1);
-        double randX = ThreadLocalRandom.current().nextInt(0, 2 + 1);
+        double randY;
+        double randX;
         Point newCoordinates = new Point(0, 0);
         double posX = 0;
         double posY = 0;
@@ -145,7 +147,8 @@ class Ant {
                 posY > 5 &&
                 posY <= (this.worldSize - 5))
                 ) {
-
+            randY = ThreadLocalRandom.current().nextInt(0, 2 + 1);
+            randX = ThreadLocalRandom.current().nextInt(0, 2 + 1);
             if (Math.round(randX) == 0) {
                 posX = this.position.getX() - 5;
             } else if (Math.round(randX) == 2) {
@@ -173,13 +176,29 @@ class Ant {
 
 }
 
-class BunchOfFood {
+class BunchOfFood implements PropertyChangeListener {
     private Point position;
     private int foodQuantity;
+    private Rectangle area;
+
 
     public BunchOfFood(Point position, int foodQuantity) {
         this.position = position;
         this.foodQuantity = foodQuantity;
+        this.area = new Rectangle(
+                (int) this.position.getX(),
+                (int) this.position.getY(),
+                foodQuantity,
+                foodQuantity
+        );
+    }
+
+    public Rectangle getArea() {
+        return area;
+    }
+
+    public void setArea(Rectangle area) {
+        this.area = area;
     }
 
     public Point getPosition() {
@@ -196,16 +215,52 @@ class BunchOfFood {
 
     public void setFoodQuantity(int foodQuantity) {
         this.foodQuantity = foodQuantity;
+    }
+
+    @Override
+    public void propertyChange(PropertyChangeEvent e) {
+        System.out.printf(e.getPropertyName() + "\n");
+        if ("foodQuantity".equals(e.getPropertyName())) {
+            System.out.printf("Food size changed !\n");
+            this.area.setSize(this.foodQuantity, this.foodQuantity);
+        }
+    }
+
+    public void setSize () {
+        this.area.setSize(this.foodQuantity, this.foodQuantity);
+    }
+
+    public void removeFood () {
+        this.foodQuantity -= 1;
     }
 }
 
 class AntHill {
     private Point position;
+    private Rectangle area;
     private int foodQuantity;
 
-    public AntHill(Point position, int foodQuantity) {
+    public AntHill(Point position, int foodQuantity, int size) {
         this.position = position;
         this.foodQuantity = foodQuantity;
+        this.area = new Rectangle(
+                (int) this.position.getX(),
+                (int) this.position.getY(),
+                size,
+                size
+        );
+    }
+
+    public Rectangle getArea() {
+        return area;
+    }
+
+    public void setArea(Rectangle area) {
+        this.area = area;
+    }
+
+    public void setSize() {
+        this.area.setSize(foodQuantity, foodQuantity);
     }
 
     public Point getPosition() {
@@ -222,6 +277,10 @@ class AntHill {
 
     public void setFoodQuantity(int foodQuantity) {
         this.foodQuantity = foodQuantity;
+    }
+
+    public void addFood () {
+        this.foodQuantity += 1;
     }
 }
 
