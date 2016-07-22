@@ -68,11 +68,17 @@ public class Simulation {
         this.obstacle = obstacle;
     }
 
+    /**
+     * Next step of the simulation = the next frame
+     */
     public void nextStep() {
-        this.ant.randomDirection();
-        if (this.foodArea.getArea().contains(this.ant.getPosition())) {
-            this.ant.setCarryingFood(true);
-            System.out.println("FOOD\n");
+        if (this.ant.isCarryingFood()) {
+            this.ant.goBackHome();
+        } else {
+            this.ant.lookForFood(this.ant.randomDirection());
+            if (this.foodArea.getArea().contains(this.ant.getPosition())) {
+                this.ant.setCarryingFood(true);
+            }
         }
     }
 }
@@ -108,8 +114,19 @@ class Ant {
     public void goBackHome() {
 
     }
+    public void lookForFood(Point position) {
+        Point newCoordinates = new Point();
+        if (
+                position.getX() > 5 && position.getX() <= (this.worldSize - 5) &&
+                    position.getY() > 5 && position.getY() <= (this.worldSize - 5)
+            ) {
+            newCoordinates.setLocation(position.getX(), position.getY());
+            this.setPosition(newCoordinates);
+        }
+        this.visitedCoordinates.add(newCoordinates);
+    }
 
-    public void randomDirection() {
+    public Point randomDirection() {
         double randY = ThreadLocalRandom.current().nextInt(0, 2 + 1);
         double randX = ThreadLocalRandom.current().nextInt(0, 2 + 1);
         Point newCoordinates = new Point(0, 0);
@@ -134,14 +151,10 @@ class Ant {
         } else {
             posX = this.position.getX();
         }
-        //!this.visitedCoordinates.contains(newCoordinates)
-        if (true) { // If location has not been visited yet
-            if (posX > 5 && posX <= (this.worldSize - 5) && posY > 5 && posY <= (this.worldSize - 5)) {
-                newCoordinates.setLocation(posX, posY);
-                this.setPosition(newCoordinates);
-            }
-            this.visitedCoordinates.add(newCoordinates);
-        }
+
+        newCoordinates.setLocation(posX, posY);
+
+        return newCoordinates;
     }
 
 }
