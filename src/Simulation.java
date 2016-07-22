@@ -9,13 +9,21 @@ public class Simulation {
     private BunchOfFood bunchOfFood;
     private AntHill antHill;
     private Obstacle obstacle;
+    private ItemArea foodArea;
 
     public Simulation() {
-        this.size = 400;
-        this.ant = new Ant(false, 250, 250, this.size);
-        this.bunchOfFood = new BunchOfFood(300, 300, 100);
+        this.size = 300;
+        this.ant = new Ant(false, 150, 150, this.size);
+        this.bunchOfFood = new BunchOfFood(160, 160, 100);
+        this.foodArea = new ItemArea(
+                new Coordinates(
+                        this.bunchOfFood.getPosX(),
+                        this.bunchOfFood.getPosY()
+                ),
+                30
+        );
         this.antHill = new AntHill(10, 100, 0);
-        this.obstacle = new Obstacle(200, 200, 50);
+        this.obstacle = new Obstacle(100, 100, 50);
     }
 
     public int getSize() {
@@ -60,6 +68,9 @@ public class Simulation {
 
     public void nextStep() {
         this.ant.randomDirection();
+        if (this.foodArea.getArea().contains(new Coordinates(this.ant.getPosX(), this.ant.getPosY()))) {
+            System.out.println("FOOD !!\n");
+        }
     }
 }
 
@@ -104,7 +115,7 @@ class Ant {
     public void randomDirection() {
         double randY = ThreadLocalRandom.current().nextInt(0, 2 + 1);
         double randX = ThreadLocalRandom.current().nextInt(0, 2 + 1);
-        Coordinates newCoordinates = new Coordinates();
+        Coordinates newCoordinates = new Coordinates(0, 0);
 
         if (Math.round(randX) == 0) {
             newCoordinates.setX(this.posX - 5);
@@ -259,6 +270,11 @@ class Coordinates {
     private int x;
     private int y;
 
+    public Coordinates(int x, int y) {
+        this.x = x;
+        this.y = y;
+    }
+
     public int getX() {
         return x;
     }
@@ -292,5 +308,27 @@ class Coordinates {
         int result = x;
         result = 31 * result + y;
         return result;
+    }
+}
+
+/**
+ * Contain all the coordinates for a given element
+ */
+class ItemArea {
+    private ArrayList<Coordinates> area = new ArrayList<>();
+
+    public ItemArea(Coordinates coordinates, int size) {
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j ++) {
+                Coordinates newCoordinates = new Coordinates(0, 0);
+                newCoordinates.setX(coordinates.getX() + i);
+                newCoordinates.setY(coordinates.getY() + j);
+                area.add(newCoordinates);
+            }
+        }
+    }
+
+    public ArrayList<Coordinates> getArea() {
+        return area;
     }
 }
