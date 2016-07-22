@@ -1,5 +1,6 @@
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Simulation {
@@ -8,14 +9,18 @@ public class Simulation {
     private BunchOfFood bunchOfFood;
     private AntHill antHill;
     private Obstacle obstacle;
-    private ItemArea foodArea;
+    private ArrayList<Pheromone> pheromones = new ArrayList<>();
 
     public Simulation() {
         this.size = 300;
         this.ant = new Ant(false, new Point(150, 150), this.size);
-        this.bunchOfFood = new BunchOfFood(new Point(170, 170), 30);
+        this.bunchOfFood = new BunchOfFood(new Point(150, 150), 30);
         this.antHill = new AntHill(new Point(10, 100), 0, 50);
         this.obstacle = new Obstacle(100, 100, 50);
+    }
+
+    public ArrayList<Pheromone> getPheromones() {
+        return pheromones;
     }
 
     public int getSize() {
@@ -58,13 +63,25 @@ public class Simulation {
         this.obstacle = obstacle;
     }
 
+    public void updatePheromones() {
+        for (Iterator<Pheromone> iterator = this.pheromones.iterator(); iterator.hasNext();) {
+            Pheromone pheromone = iterator.next();
+            pheromone.decreaseDuration();
+            if (pheromone.getDuration() == 0) {
+                iterator.remove();
+            }
+        }
+    }
+
     /**
      * Next step of the simulation = the next frame
      */
     public void nextStep() {
+        this.updatePheromones(); // Decrease duration of all pheromones
         // If the ant has found any food, it goes back to the antHill
         if (this.ant.isCarryingFood()) {
             this.ant.goBackHome(this.antHill.getPosition());
+            this.ant.dropPheromone(this.pheromones);
             if (this.antHill.getArea().contains(this.ant.getPosition())) {
                 this.antHill.addFood();
                 this.ant.setCarryingFood(false);
@@ -85,7 +102,6 @@ class Ant {
     private boolean carryingFood = false;
     private Point position;
     private int worldSize;
-    private ArrayList<Point> visitedCoordinates = new ArrayList<>();
 
     public Ant(boolean carryingFood, Point position, int worldSize) {
         this.carryingFood = carryingFood;
@@ -126,7 +142,6 @@ class Ant {
     public void lookForFood() {
         Point newCoordinates = this.randomDirection();
         this.setPosition(newCoordinates);
-        this.visitedCoordinates.add(newCoordinates);
     }
 
     public Point randomDirection() {
@@ -145,19 +160,19 @@ class Ant {
             randY = ThreadLocalRandom.current().nextInt(0, 2 + 1);
             randX = ThreadLocalRandom.current().nextInt(0, 2 + 1);
             if (Math.round(randX) == 0) {
-                posX = this.position.getX() - 5;
+                posX = this.position.getX() - 1;
             } else if (Math.round(randX) == 2) {
-                posX = this.position.getX() + 5;
+                posX = this.position.getX() + 1;
                 //newCoordinates.setX(this.posX + 5);
             } else {
                 posX = this.position.getX();
             }
 
             if (Math.round(randY) == 0) {
-                posY = this.position.getY() - 5;
+                posY = this.position.getY() - 1;
                 //newCoordinates.setY(this.posY - 5);
             } else if (Math.round(randY) == 2) {
-                posY = this.position.getY() + 5;
+                posY = this.position.getY() + 1;
                 //newCoordinates.setY(this.posY + 5);
             } else {
                 posY = this.position.getX();
@@ -169,6 +184,21 @@ class Ant {
         return newCoordinates;
     }
 
+    public void dropPheromone(ArrayList<Pheromone> pheromones) {
+        boolean emptyPosition = true;
+        for (Pheromone pheromone: pheromones) {
+            if (pheromone.getPosition().equals(this.getPosition())) {
+                System.out.printf(pheromone.getPosition() + " - " + this.getPosition() + "\n");
+                emptyPosition = false;
+                pheromone.increaseDuration();
+            }
+        }
+        if (emptyPosition) {
+            System.out.printf("Dropping new Pheromone\n");
+            Pheromone newPheromone = new Pheromone(100, new Point(this.getPosition()));
+            pheromones.add(newPheromone);
+        }
+    }
 }
 
 class BunchOfFood {
@@ -270,11 +300,14 @@ class AntHill {
     }
 }
 
-class pheromones {
+class Pheromone {
     private int duration;
+    private Point position;
 
-    public pheromones(int duration) {
+    public Pheromone(int duration, Point position) {
+
         this.duration = duration;
+        this.position = position;
     }
 
     public int getDuration() {
@@ -283,6 +316,22 @@ class pheromones {
 
     public void setDuration(int duration) {
         this.duration = duration;
+    }
+
+    public Point getPosition() {
+        return position;
+    }
+
+    public void setPosition(Point position) {
+        this.position = position;
+    }
+
+    public void increaseDuration() {
+        this.duration += 100;
+    }
+
+    public void decreaseDuration () {
+        this.duration -= 1;
     }
 }
 

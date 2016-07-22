@@ -1,5 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 
 public class AntHillView {
     private Simulation simulation;
@@ -44,6 +45,7 @@ class AntPlayground extends JPanel {
         Ant ant = this.simulation.getAnt();
         BunchOfFood bunchOfFood = this.simulation.getBunchOfFood();
         Obstacle obstacle = this.simulation.getObstacle();
+        ArrayList<Pheromone> pheromones = this.simulation.getPheromones();
 
         // AntHill
         g.setColor(Color.GREEN);
@@ -77,5 +79,24 @@ class AntPlayground extends JPanel {
                 5,
                 5
         );
+        // Pheromones
+        for (Pheromone pheromone: pheromones) {
+            int duration = pheromone.getDuration();
+            if (duration > 50) {
+                g.setColor(Color.darkGray);
+            }
+            if (duration > 25 && duration <= 50) {
+                g.setColor(Color.GRAY);
+            }
+            if (duration <= 25) {
+                g.setColor(Color.lightGray);
+            }
+            g.fillOval(
+                    (int) pheromone.getPosition().getX(),
+                    (int) pheromone.getPosition().getY(),
+                    5,
+                    5
+            );
+        }
     }
 }
