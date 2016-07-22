@@ -15,7 +15,7 @@ public class Simulation {
         this.size = 300;
         this.ant = new Ant(false, new Point(150, 150), this.size);
         this.bunchOfFood = new BunchOfFood(new Point(150, 150), 30);
-        this.antHill = new AntHill(new Point(10, 100), 0, 50);
+        this.antHill = new AntHill(new Point(10, 200), 0, 50);
         this.obstacle = new Obstacle(100, 100, 50);
     }
 
@@ -88,7 +88,7 @@ public class Simulation {
             }
         } else {
             // If not, it goes around randomly
-            this.ant.lookForFood();
+            this.ant.lookForFood(this.pheromones);
             if (this.bunchOfFood.getArea().contains(this.ant.getPosition())) {
                 this.bunchOfFood.removeFood();
                 this.bunchOfFood.setSize();
@@ -130,18 +130,66 @@ class Ant {
      * @param antHillPosition
      */
     public void goBackHome(Point antHillPosition) {
-        Point newCoordinates = this.randomDirection();
-        if (newCoordinates.distanceSq(antHillPosition) < this.position.distanceSq(antHillPosition)) {
-            this.position.setLocation(newCoordinates);
+        Point newCoordinates = new Point(0, 0);
+        while (
+                newCoordinates.distanceSq(antHillPosition) >= this.position.distanceSq(antHillPosition) ||
+                newCoordinates.getX() == 0
+                ) {
+            newCoordinates.setLocation(randomDirection());
         }
+        this.position.setLocation(newCoordinates);
     }
 
     /**
      * Go around randomly
      */
-    public void lookForFood() {
-        Point newCoordinates = this.randomDirection();
-        this.setPosition(newCoordinates);
+    public void lookForFood(ArrayList<Pheromone> pheromones) {
+        Point newCoordinates = this.lookForPheromone(pheromones);
+        this.position.setLocation(newCoordinates);
+    }
+
+    public Point lookForPheromone(ArrayList<Pheromone> pheromones) {
+
+        Point pheromoneDirection = new Point();
+
+        // Array with all possible directions
+        ArrayList<Point> directions = new ArrayList<>();
+        for (int i = 0; i < 2; i++) {
+            for (int j = 0; j < 2; j++) {
+                Point direction = new Point(i, j);
+                if (!this.getPosition().equals(direction)) { // We don't want the current direction
+                    directions.add(new Point(i, j));
+                }
+            }
+        }
+
+        // Iterate over each direction
+        for (Iterator<Point> iterator = directions.iterator(); iterator.hasNext();) {
+            Point direction = iterator.next();
+            boolean empty_direction = true;
+            int pheromoneDuration = 0;
+            // Iterate over all pheromones
+            for (Pheromone pheromone: pheromones) {
+                // If there is a pheromone in that direction
+                if (pheromone.getPosition().equals(direction)) {
+                    empty_direction = false;
+                    // If first try
+                    if (pheromoneDuration == 0) {
+                        pheromoneDirection.setLocation(pheromone.getPosition());
+                        pheromoneDuration = pheromone.getDuration();
+                    } else if (pheromone.getDuration() < pheromoneDuration){ // We want the older pheromone
+                        pheromoneDirection.setLocation(pheromone.getPosition());
+                        pheromoneDuration = pheromone.getDuration();
+                    }
+                }
+            }
+        }
+        if (pheromoneDirection.getX() > 5) {
+            System.out.printf(pheromoneDirection.getLocation() + "\n");
+            return pheromoneDirection;
+        } else {
+            return this.randomDirection();
+        }
     }
 
     public Point randomDirection() {
@@ -175,10 +223,9 @@ class Ant {
                 posY = this.position.getY() + 1;
                 //newCoordinates.setY(this.posY + 5);
             } else {
-                posY = this.position.getX();
+                posY = this.position.getY();
             }
         }
-
         newCoordinates.setLocation(posX, posY);
 
         return newCoordinates;
@@ -188,14 +235,12 @@ class Ant {
         boolean emptyPosition = true;
         for (Pheromone pheromone: pheromones) {
             if (pheromone.getPosition().equals(this.getPosition())) {
-                System.out.printf(pheromone.getPosition() + " - " + this.getPosition() + "\n");
                 emptyPosition = false;
                 pheromone.increaseDuration();
             }
         }
         if (emptyPosition) {
-            System.out.printf("Dropping new Pheromone\n");
-            Pheromone newPheromone = new Pheromone(100, new Point(this.getPosition()));
+            Pheromone newPheromone = new Pheromone(300, new Point(this.getPosition()));
             pheromones.add(newPheromone);
         }
     }
@@ -327,7 +372,7 @@ class Pheromone {
     }
 
     public void increaseDuration() {
-        this.duration += 100;
+        this.duration += 300;
     }
 
     public void decreaseDuration () {
@@ -368,26 +413,5 @@ class Obstacle {
 
     public void setSize(int size) {
         this.size = size;
-    }
-}
-
-/**
- * Contain all the coordinates for a given element
- */
-class ItemArea {
-    private ArrayList<Point> area = new ArrayList<>();
-
-    public ItemArea(Point coordinates, int size) {
-        for (int i = 0; i < size; i++) {
-            for (int j = 0; j < size; j ++) {
-                Point newCoordinates = new Point();
-                newCoordinates.setLocation((coordinates.getX() + i), (coordinates.getY() + j));
-                area.add(newCoordinates);
-            }
-        }
-    }
-
-    public ArrayList<Point> getArea() {
-        return area;
     }
 }
