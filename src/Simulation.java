@@ -151,6 +151,7 @@ class Ant {
     public Point lookForPheromone(ArrayList<Pheromone> pheromones) {
 
         Point pheromoneDirection = new Point();
+        ArrayList<Point> pheromonePositions = new ArrayList<>();
 
         // Array with all possible directions
         ArrayList<Point> directions = new ArrayList<>();
@@ -161,6 +162,11 @@ class Ant {
                     directions.add(new Point(i, j));
                 }
             }
+        }
+
+        // Array with all pheromones positions
+        for (Pheromone pheromone : pheromones) {
+            pheromonePositions.add(pheromone.getPosition());
         }
 
         // Iterate over each direction
