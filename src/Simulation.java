@@ -69,9 +69,11 @@ public class Simulation {
      * Next step of the simulation = the next frame
      */
     public void nextStep() {
+        // If the ant has found any food, it goes back to the antHill
         if (this.ant.isCarryingFood()) {
             this.ant.goBackHome(this.antHill.getPosition());
         } else {
+            // If not, it goes around randomly
             this.ant.lookForFood();
             if (this.foodArea.getArea().contains(this.ant.getPosition())) {
                 this.ant.setCarryingFood(true);
@@ -108,6 +110,10 @@ class Ant {
         this.carryingFood = carryingFood;
     }
 
+    /**
+     * Assign ant a new postion if closest to antHill
+     * @param antHillPosition
+     */
     public void goBackHome(Point antHillPosition) {
         Point newCoordinates = this.randomDirection();
         if (newCoordinates.distanceSq(antHillPosition) < this.position.distanceSq(antHillPosition)) {
@@ -116,6 +122,10 @@ class Ant {
             this.position.setLocation(newCoordinates);
         }
     }
+
+    /**
+     * Go around randomly
+     */
     public void lookForFood() {
         Point newCoordinates = this.randomDirection();
         this.setPosition(newCoordinates);
