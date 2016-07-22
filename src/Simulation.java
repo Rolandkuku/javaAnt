@@ -176,7 +176,7 @@ class Ant {
 
 }
 
-class BunchOfFood implements PropertyChangeListener {
+class BunchOfFood {
     private Point position;
     private int foodQuantity;
     private Rectangle area;
@@ -215,15 +215,6 @@ class BunchOfFood implements PropertyChangeListener {
 
     public void setFoodQuantity(int foodQuantity) {
         this.foodQuantity = foodQuantity;
-    }
-
-    @Override
-    public void propertyChange(PropertyChangeEvent e) {
-        System.out.printf(e.getPropertyName() + "\n");
-        if ("foodQuantity".equals(e.getPropertyName())) {
-            System.out.printf("Food size changed !\n");
-            this.area.setSize(this.foodQuantity, this.foodQuantity);
-        }
     }
 
     public void setSize () {
