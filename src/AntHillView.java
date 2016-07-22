@@ -50,16 +50,16 @@ class AntPlayground extends JPanel {
         g.fillRect(
                 (int) antHill.getPosition().getX(),
                 (int) antHill.getPosition().getY(),
-                50,
-                50
+                antHill.getArea().width,
+                antHill.getArea().height
         );
         // Bunch of Food
         g.setColor(Color.BLUE);
         g.fillRect(
                 (int) bunchOfFood.getPosition().getX(),
                 (int) bunchOfFood.getPosition().getY(),
-                30,
-                30
+                bunchOfFood.getArea().width,
+                bunchOfFood.getArea().height
         );
         // Obstacle
         g.setColor(Color.RED);
