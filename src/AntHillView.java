@@ -72,8 +72,8 @@ class AntPlayground extends JPanel {
         // Ant
         g.setColor(Color.BLACK);
         g.fillOval(
-                ant.getPosX(),
-                ant.getPosY(),
+                (int) ant.getPosition().getX(),
+                (int) ant.getPosition().getY(),
                 5,
                 5
         );

@@ -1,5 +1,7 @@
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -13,10 +15,10 @@ public class Simulation {
 
     public Simulation() {
         this.size = 300;
-        this.ant = new Ant(false, 150, 150, this.size);
+        this.ant = new Ant(false, new Point(150, 150), this.size);
         this.bunchOfFood = new BunchOfFood(160, 160, 100);
         this.foodArea = new ItemArea(
-                new Coordinates(
+                new Point(
                         this.bunchOfFood.getPosX(),
                         this.bunchOfFood.getPosY()
                 ),
@@ -68,73 +70,75 @@ public class Simulation {
 
     public void nextStep() {
         this.ant.randomDirection();
-        if (this.foodArea.getArea().contains(new Coordinates(this.ant.getPosX(), this.ant.getPosY()))) {
-            System.out.println("FOOD !!\n");
+        if (this.foodArea.getArea().contains(this.ant.getPosition())) {
+            this.ant.setCarryingFood(true);
+            System.out.println("FOOD\n");
         }
     }
 }
 
 class Ant {
     private boolean carryingFood = false;
-    private int posY;
-    private int posX;
+    private Point position;
     private int worldSize;
-    private ArrayList<Coordinates> visitedCoordinates = new ArrayList<>();
+    private ArrayList<Point> visitedCoordinates = new ArrayList<>();
 
-    public Ant(boolean carryingFood, int posY, int posX, int worldSize) {
+    public Ant(boolean carryingFood, Point position, int worldSize) {
         this.carryingFood = carryingFood;
-        this.posY = posY;
-        this.posX = posX;
+        this.position = position;
         this.worldSize = worldSize;
-    }
-
-    public int getPosY() {
-        return posY;
-    }
-
-    public void setPosY(int posY) {
-        this.posY = posY;
     }
 
     public boolean isCarryingFood() {
         return carryingFood;
     }
 
+    public Point getPosition() {
+        return position;
+    }
+
+    public void setPosition(Point position) {
+        this.position = position;
+    }
+
     public void setCarryingFood(boolean carryingFood) {
         this.carryingFood = carryingFood;
     }
 
-    public int getPosX() {
-        return posX;
-    }
+    public void goBackHome() {
 
-    public void setPosX(int posX) {
-        this.posX = posX;
     }
 
     public void randomDirection() {
         double randY = ThreadLocalRandom.current().nextInt(0, 2 + 1);
         double randX = ThreadLocalRandom.current().nextInt(0, 2 + 1);
-        Coordinates newCoordinates = new Coordinates(0, 0);
+        Point newCoordinates = new Point(0, 0);
+        double posX = 0;
+        double posY = 0;
 
         if (Math.round(randX) == 0) {
-            newCoordinates.setX(this.posX - 5);
+            posX = this.position.getX() - 5;
         } else if (Math.round(randX) == 2) {
-            newCoordinates.setX(this.posX + 5);
+            posX = this.position.getX() + 5;
+            //newCoordinates.setX(this.posX + 5);
+        } else {
+            posX = this.position.getX();
         }
 
         if (Math.round(randY) == 0) {
-            newCoordinates.setY(this.posY - 5);
+            posY = this.position.getY() - 5;
+            //newCoordinates.setY(this.posY - 5);
         } else if (Math.round(randY) == 2) {
-            newCoordinates.setY(this.posY + 5);
+            posY = this.position.getY() + 5;
+            //newCoordinates.setY(this.posY + 5);
+        } else {
+            posX = this.position.getX();
         }
         //!this.visitedCoordinates.contains(newCoordinates)
         if (true) { // If location has not been visited yet
-            if (newCoordinates.getX() > 5 && newCoordinates.getX() <= this.worldSize - 5) {
-                this.setPosX(newCoordinates.getX());
-            }
-            if (newCoordinates.getY() > 5 && newCoordinates.getY() <= this.worldSize - 5) {
-                this.setPosY(newCoordinates.getY());
+            if (posX > 5 && posX <= (this.worldSize - 5) && posY > 5 && posY <= (this.worldSize - 5)) {
+                newCoordinates.setLocation(posX, posY);
+                this.setPosition(newCoordinates);
             }
             this.visitedCoordinates.add(newCoordinates);
         }
@@ -266,69 +270,23 @@ class Obstacle {
     }
 }
 
-class Coordinates {
-    private int x;
-    private int y;
-
-    public Coordinates(int x, int y) {
-        this.x = x;
-        this.y = y;
-    }
-
-    public int getX() {
-        return x;
-    }
-
-    public void setX(int x) {
-        this.x = x;
-    }
-
-    public int getY() {
-        return y;
-    }
-
-    public void setY(int y) {
-        this.y = y;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Coordinates that = (Coordinates) o;
-
-        if (x != that.x) return false;
-        return y == that.y;
-
-    }
-
-    @Override
-    public int hashCode() {
-        int result = x;
-        result = 31 * result + y;
-        return result;
-    }
-}
-
 /**
  * Contain all the coordinates for a given element
  */
 class ItemArea {
-    private ArrayList<Coordinates> area = new ArrayList<>();
+    private ArrayList<Point> area = new ArrayList<>();
 
-    public ItemArea(Coordinates coordinates, int size) {
+    public ItemArea(Point coordinates, int size) {
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j ++) {
-                Coordinates newCoordinates = new Coordinates(0, 0);
-                newCoordinates.setX(coordinates.getX() + i);
-                newCoordinates.setY(coordinates.getY() + j);
+                Point newCoordinates = new Point();
+                newCoordinates.setLocation((coordinates.getX() + i), (coordinates.getY() + j));
                 area.add(newCoordinates);
             }
         }
     }
 
-    public ArrayList<Coordinates> getArea() {
+    public ArrayList<Point> getArea() {
         return area;
     }
 }
