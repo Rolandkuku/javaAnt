@@ -13,7 +13,7 @@ public class Simulation {
 
     public Simulation() {
         this.size = 300;
-        this.ants = new Ants(this.size);
+        this.ants = new Ants(this.size, 50);
         this.bunchOfFood = new BunchOfFood(new Point(150, 150), 30);
         this.antHill = new AntHill(new Point(10, 200), 0, 50);
         this.obstacle = new Obstacle(100, 100, 50);
@@ -84,11 +84,13 @@ public class Simulation {
 }
 
 class Ant {
+    int id;
     private boolean carryingFood = false;
     private Point position;
     private int worldSize;
 
-    public Ant(boolean carryingFood, Point position, int worldSize) {
+    public Ant(int id, boolean carryingFood, Point position, int worldSize) {
+        this.id = id;
         this.carryingFood = carryingFood;
         this.position = position;
         this.worldSize = worldSize;
@@ -108,6 +110,14 @@ class Ant {
 
     public void setCarryingFood(boolean carryingFood) {
         this.carryingFood = carryingFood;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     /**
@@ -143,8 +153,8 @@ class Ant {
         Rectangle rectangle = new Rectangle();
         double currentX = this.getPosition().getX();
         double currentY = this.getPosition().getY();
-        rectangle.setLocation((int) currentX - 20, (int) currentY -20);
-        rectangle.setSize(40, 40);
+        rectangle.setLocation((int) currentX - 40, (int) currentY -40);
+        rectangle.setSize(80, 80);
 
         // Iterate over each direction
         for (Pheromone pheromone: pheromones) {
@@ -158,6 +168,9 @@ class Ant {
             while (newCoordinates.distanceSq(pheromoneLocation) > this.getPosition().distanceSq(pheromoneLocation)) {
                 newCoordinates = randomDirection();
             }
+            if (newCoordinates.equals(this.getPosition())) {
+                newCoordinates = randomDirection();
+            }
         }
 
 
@@ -165,7 +178,6 @@ class Ant {
         if (pheromoneLocation.getX() == 0) {
             return this.randomDirection();
         } else {
-            System.out.println("DIRECTION\n");
             return newCoordinates;
         }
     }
@@ -220,9 +232,9 @@ class Ant {
         if (emptyPosition) {
             int amountPheromones;
             if (onFood) {
-                amountPheromones = 1000;
+                amountPheromones = 300;
             } else {
-                amountPheromones =300;
+                amountPheromones = 100;
             }
             Pheromone newPheromone = new Pheromone(amountPheromones, new Point(this.getPosition()));
             pheromones.add(newPheromone);
@@ -233,9 +245,10 @@ class Ant {
 class Ants {
     private ArrayList<Ant> ants = new ArrayList<>();
 
-    public Ants (int worldSize) {
-        for (int i = 0; i < 30; i ++) {
+    public Ants (int worldSize, int nbAnts) {
+        for (int i = 0; i < nbAnts; i ++) {
             Ant newAnt = new Ant(
+                    i,
                     false,
                     new Point(
                         ThreadLocalRandom.current().nextInt(100, 150 + 1),
@@ -259,6 +272,9 @@ class Ants {
         for (Ant ant: this.ants) {
             if (ant.isCarryingFood()) {
                 ant.goBackHome(antHill.getPosition());
+                while (!this.freePosition(ant, this.getAnts())) { // no ant collision
+                    ant.goBackHome(antHill.getPosition());
+                }
                 if (food.getArea().contains(ant.getPosition())) {
                     ant.dropPheromone(pheromones, true);
                 } else {
@@ -269,8 +285,11 @@ class Ants {
                     ant.setCarryingFood(false);
                 }
             } else {
-                // If not, it goes around randomly
+                // If not, it looks for pheromones
                 ant.lookForFood(pheromones);
+                while (!freePosition(ant, this.getAnts())) {
+                    ant.lookForFood(pheromones);
+                }
                 if (food.getArea().contains(ant.getPosition())) {
                     food.removeFood();
                     food.setSize();
@@ -278,6 +297,16 @@ class Ants {
                 }
             }
         }
+    }
+
+    public boolean freePosition(Ant ant1, ArrayList<Ant> ants) {
+        boolean free = true;
+        for (Ant ant2: ants) {
+            if (ant2.getPosition().equals(ant1.getPosition()) && ant1.getId() != ant2.getId()) {
+                free = false;
+            }
+        }
+        return free;
     }
 }
 
