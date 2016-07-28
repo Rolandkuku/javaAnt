@@ -1,7 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
 
-public class DataFrame extends JFrame{
+public class View extends JFrame{
     //Var
     private int windowSize;
     private int numberOfAnts;
@@ -30,7 +30,7 @@ public class DataFrame extends JFrame{
     public Boolean getIsValid(){ return isValid; }
 
     //Constructeur
-    DataFrame() {
+    View() {
         //Init
         setIsValid(true);
 

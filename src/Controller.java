@@ -1,13 +1,13 @@
 public class Controller {
 
     public void start() {
-        DataFrame dataFrame = new DataFrame();
+        View myView = new View();
 
-        if(dataFrame.getIsValid()) {
+        if(myView.getIsValid()) {
 
             Simulation simulation = new Simulation();
-            simulation.setSize(dataFrame.getWindowSize());
-            simulation.setAnts(new Ants(simulation.getSize(), dataFrame.getNumberOfAnts()));
+            simulation.setSize(myView.getWindowSize());
+            simulation.setAnts(new Ants(simulation.getSize(), myView.getNumberOfAnts()));
 
             AntHillView antHillView = new AntHillView(simulation);
             while (true) {
