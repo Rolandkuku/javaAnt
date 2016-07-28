@@ -66,10 +66,10 @@ class AntPlayground extends JPanel {
         // Obstacle
         g.setColor(Color.RED);
         g.fillRect(
-                obstacle.getPosX(),
-                obstacle.getPosY(),
-                20,
-                20
+                (int) obstacle.getArea().getLocation().getX(),
+                (int) obstacle.getArea().getLocation().getY(),
+                (int) obstacle.getArea().getWidth(),
+                (int) obstacle.getArea().getHeight()
         );
         // Ant
         g.setColor(Color.BLACK);
