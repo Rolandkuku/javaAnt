@@ -7,6 +7,7 @@ public class Controller {
 
             Simulation simulation = new Simulation();
             simulation.setSize(dataFrame.getWindowSize());
+            simulation.setAnts(new Ants(simulation.getSize(), dataFrame.getNumberOfAnts()));
 
             AntHillView antHillView = new AntHillView(simulation);
             while (true) {
