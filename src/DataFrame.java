@@ -5,6 +5,7 @@ public class DataFrame extends JFrame{
     //Var
     private int windowSize;
     private int numberOfAnts;
+    private boolean isValid = true;
 
     //Setter
     public void setWindowSize(Integer windowSize){
@@ -15,6 +16,8 @@ public class DataFrame extends JFrame{
         this.numberOfAnts = numberOfAnts;
     }
 
+    public void setIsValid(Boolean isValid) { this.isValid = isValid; }
+
     //Getter
     public Integer getWindowSize(){
         return windowSize;
@@ -24,16 +27,19 @@ public class DataFrame extends JFrame{
         return numberOfAnts;
     }
 
+    public Boolean getIsValid(){ return isValid; }
+
     //Constructeur
     DataFrame() {
-        //Var
+        //Init
+        setIsValid(true);
 
         //Select size
-        String[] items = {"Grande", "Moyenne", "Petite"};
+        String[] items = {"Petite", "Moyenne", "Grande"};
         JComboBox combo = new JComboBox(items);
 
         //Input Ants
-        JTextField numberOfAntsInput = new JTextField(10);
+        JTextField numberOfAntsInput = new JTextField("1");
 
         //Data du panel
         JPanel panel = new JPanel(new GridLayout(0,1));
@@ -42,12 +48,19 @@ public class DataFrame extends JFrame{
         panel.add(new JLabel("Nombre de fourmis :"));
         panel.add(numberOfAntsInput);
 
-        //Confirm box
-        int result = JOptionPane.showConfirmDialog(null, panel, "JAVA 3ADW",
-                JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+        int result = JOptionPane.showConfirmDialog(null, panel, "JAVA 3ADW", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
 
         //Success du formulaire
-        if (result == JOptionPane.OK_OPTION) {
+        if (result == JOptionPane.OK_OPTION){
+
+            //Set le nombre de fourmis
+            if(numberOfAntsInput.getText().equals("")) {
+                setIsValid(false);
+                JOptionPane.showMessageDialog(panel, "Veuillez entrer un nombre valide", "Erreur", JOptionPane.WARNING_MESSAGE);
+            }else{
+                String nbAnts = numberOfAntsInput.getText();
+                setNumberOfAnts(Integer.parseInt(nbAnts));
+            }
 
             //Set la taille
             String mySize = combo.getSelectedItem().toString();
@@ -69,13 +82,11 @@ public class DataFrame extends JFrame{
                     setWindowSize(500);
             }
 
-            //Set le nombre de fourmis
-            String nbAnts = numberOfAntsInput.getText();
-            setNumberOfAnts(Integer.parseInt(nbAnts));
 
         //Echec du formulaire
-        } else {
+        }else{
             System.out.println("Echec");
+            setIsValid(false);
         }
     }
 }
