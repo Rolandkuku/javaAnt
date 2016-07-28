@@ -10,10 +10,11 @@ class Simulation {
     private AntHill antHill;
     private Obstacle obstacle;
     private ArrayList<Pheromone> pheromones = new ArrayList<>();
+    private DataFrame dataFrame = new DataFrame();
 
     Simulation() {
-        this.size = 300;
-        this.ants = new Ants(this.size, 1);
+        this.size = dataFrame.getWindowSize();
+        this.ants = new Ants(this.size, dataFrame.getNumberOfAnts());
         this.bunchOfFood = new BunchOfFood(new Point(150, 150), 30);
         this.antHill = new AntHill(new Point(10, 200), 0, 50);
         this.obstacle = new Obstacle(new Rectangle(new Point(80, 170)), 50);

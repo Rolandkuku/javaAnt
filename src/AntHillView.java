@@ -25,7 +25,7 @@ class AntWorld extends JFrame {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setTitle("Ant World");
         this.setSize(new Dimension(size, size));
-        this.setLocation(100, 100);
+        this.setLocationRelativeTo(null);
     }
 }
 
