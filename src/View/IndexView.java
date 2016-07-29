@@ -69,43 +69,55 @@ public class IndexView {
 
             if(numberOfAntsInput.getText().equals("")) {
                 JOptionPane.showMessageDialog(panel, "Veuillez entrer un nombre valide", "Erreur", JOptionPane.WARNING_MESSAGE);
+                cfg.setIsValid(false);
             }else{
+                cfg.setIsValid(true);
                 String nbAnts = numberOfAntsInput.getText();
                 cfg.setNumberOfAnts(Integer.parseInt(nbAnts));
             }
 
             if(bunchOfFoodQuantity.getText().equals("")) {
                 JOptionPane.showMessageDialog(panel, "Veuillez entrer une quantité valide", "Erreur", JOptionPane.WARNING_MESSAGE);
+                cfg.setIsValid(false);
             }else{
+                cfg.setIsValid(true);
                 String nbAnts = bunchOfFoodQuantity.getText();
                 cfg.setBunchOfFoodQuantity(Integer.parseInt(nbAnts));
             }
 
             if(numberOfObstacle.getText().equals("")) {
+                cfg.setIsValid(false);
                 JOptionPane.showMessageDialog(panel, "Veuillez entrer un nombre d'obstacle valide", "Erreur", JOptionPane.WARNING_MESSAGE);
             }else{
+                cfg.setIsValid(true);
                 String nbObs = numberOfObstacle.getText();
                 cfg.setNumberOfObstacle(Integer.parseInt(nbObs));
             }
 
             if(AntHillQuantity.getText().equals("")) {
+                cfg.setIsValid(false);
                 JOptionPane.showMessageDialog(panel, "Veuillez entrer une quantité valide", "Erreur", JOptionPane.WARNING_MESSAGE);
             }else{
+                cfg.setIsValid(true);
                 String nbAnts = bunchOfFoodQuantity.getText();
                 cfg.setAntHillQuantity(Integer.parseInt(nbAnts));
             }
 
             if(AntHillSize.getText().equals("")) {
+                cfg.setIsValid(false);
                 JOptionPane.showMessageDialog(panel, "Veuillez entrer une taille valide", "Erreur", JOptionPane.WARNING_MESSAGE);
             }else{
+                cfg.setIsValid(true);
                 String nbAnts = AntHillSize.getText();
                 cfg.setAntHillSize(Integer.parseInt(nbAnts));
             }
 
 
             if(obstacleSize.getText().equals("")) {
+                cfg.setIsValid(false);
                 JOptionPane.showMessageDialog(panel, "Veuillez entrer une coordonnée valide", "Erreur", JOptionPane.WARNING_MESSAGE);
             }else{
+                cfg.setIsValid(true);
                 String nbAnts = obstacleSize.getText();
                 cfg.setObstacleSize(Integer.parseInt(nbAnts));
             }
@@ -133,6 +145,7 @@ public class IndexView {
 
             //Echec du formulaire
         }else{
+            cfg.setIsValid(false);
             System.out.println("Echec");
         }
     }
