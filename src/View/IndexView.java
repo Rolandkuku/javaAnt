@@ -18,7 +18,7 @@ public class IndexView {
 
         //Input var
         JTextField numberOfAntsInput = new JTextField("1");
-        JTextField bunchOfFoodQuantity = new JTextField("3");
+        JTextField bunchOfFoodQuantity = new JTextField("10");
         JTextField numberOfObstacle = new JTextField("2");
         JTextField AntHillQuantity = new JTextField("50");
         JTextField AntHillSize = new JTextField("50");
