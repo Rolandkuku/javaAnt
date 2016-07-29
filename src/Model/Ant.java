@@ -137,19 +137,19 @@ public class Ant {
             randY = ThreadLocalRandom.current().nextInt(0, 2 + 1);
             randX = ThreadLocalRandom.current().nextInt(0, 2 + 1);
             if (Math.round(randX) == 0) {
-                posX = this.getArea().getX() - 1;
+                posX = this.getArea().getX() - 5;
             } else if (Math.round(randX) == 2) {
-                posX = this.getArea().getX() + 1;
+                posX = this.getArea().getX() + 5;
                 //newCoordinates.setX(this.posX + 5);
             } else {
                 posX = this.getArea().getX();
             }
 
             if (Math.round(randY) == 0) {
-                posY = this.getArea().getY() - 1;
+                posY = this.getArea().getY() - 5;
                 //newCoordinates.setY(this.posY - 5);
             } else if (Math.round(randY) == 2) {
-                posY = this.getArea().getY() + 1;
+                posY = this.getArea().getY() + 5;
                 //newCoordinates.setY(this.posY + 5);
             } else {
                 posY = this.getArea().getY();
