@@ -27,6 +27,11 @@ public class IndexView {
         //Panel
         JPanel panel = new JPanel(new GridLayout(0,1));
 
+        //Title
+        JLabel myTitleLabel = new JLabel("Java : Les fourmis");
+        panel.add(myTitleLabel);
+        myTitleLabel.setFont(new Font("Serif", Font.BOLD, 30));
+
         //Select Size
         panel.add(new JLabel("Taille de la fenêtre :"));
         panel.add(combo);
