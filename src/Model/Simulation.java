@@ -13,7 +13,7 @@ public class Simulation {
     private Configuration cfg;
     private BunchOfFood bunchOfFood;
     private AntHill antHill;
-    private Obstacle obstacle;
+    private Obstacles obstacles;
     private ArrayList<Pheromone> pheromones = new ArrayList<>();
 
     //Constructeur avec la Configuration
@@ -22,7 +22,7 @@ public class Simulation {
         this.ants = new Ants(this.size, cfg.getNumberOfAnts());
         this.bunchOfFood = new  BunchOfFood(new Point(150, 150), cfg.getBunchOfFoodQuantity());
         this.antHill = new AntHill(new Point(10, 200), cfg.getAntHillQuantity(), cfg.getAntHillSize());
-        this.obstacle = new Obstacle(new Rectangle(new Point(80, 170)), 50);
+        this.obstacles = new Obstacles(cfg.getWindowSize(), 10, this.antHill.getArea(), this.bunchOfFood.getArea());
     }
 
     //Constructeur par default
@@ -31,7 +31,7 @@ public class Simulation {
         this.ants = new Ants(this.size, 1);
         this.bunchOfFood = new BunchOfFood(new Point(150, 150), 30);
         this.antHill = new AntHill(new Point(10, 200), 0, 50);
-        this.obstacle = new Obstacle(new Rectangle(new Point(80, 170)), 50);
+        //this.obstacles = new Obstacle(new Rectangle(new Point(80, 170)), 50);
     }
 
     public ArrayList<Pheromone> getPheromones() {
@@ -70,12 +70,13 @@ public class Simulation {
         this.antHill = antHill;
     }
 
-    public Obstacle getObstacle() {
-        return obstacle;
+    public Obstacles getObstacles() {
+
+        return obstacles;
     }
 
-    public void setObstacle(Obstacle obstacle) {
-        this.obstacle = obstacle;
+    public void setObstacles(Obstacles obstacles) {
+        this.obstacles = obstacles;
     }
 
     public void updatePheromones() {
@@ -94,6 +95,6 @@ public class Simulation {
     public void nextStep() {
         this.updatePheromones(); // Decrease duration of all pheromones
         // If the ant has found any food, it goes back to the antHill
-        this.ants.move(this.pheromones, this.antHill, this.bunchOfFood, this.obstacle);
+        this.ants.move(this.pheromones, this.antHill, this.bunchOfFood, this.obstacles);
     }
 }
