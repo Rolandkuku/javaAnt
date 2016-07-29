@@ -37,7 +37,7 @@ public class Ants {
                 while (!this.freePosition(ant, this.getAnts())) { // no ant collision && avoid obstacle
                     ant.goBackHome(antHill.getPosition(), obstacles);
                 }
-                if (foods.intersects(ant.getArea())) {
+                if (foods.contains(ant.getArea())) {
                     ant.dropPheromone(pheromones, true);
                 } else {
                     ant.dropPheromone(pheromones, false);

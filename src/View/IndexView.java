@@ -19,10 +19,10 @@ public class IndexView {
         //Input var
         JTextField numberOfAntsInput = new JTextField("1");
         JTextField bunchOfFoodQuantity = new JTextField("3");
-        JTextField numberOfObstacle = new JTextField("1");
+        JTextField numberOfObstacle = new JTextField("2");
         JTextField AntHillQuantity = new JTextField("50");
         JTextField AntHillSize = new JTextField("50");
-        JTextField obstacleSize = new JTextField("50");
+        JTextField obstacleSize = new JTextField("30");
 
         //Panel
         JPanel panel = new JPanel(new GridLayout(0,1));
