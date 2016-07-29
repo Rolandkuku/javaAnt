@@ -5,34 +5,16 @@ import java.util.ArrayList;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Ant {
-    int id;
+    private int id;
     private boolean carryingFood = false;
-    private Point position;
     private Rectangle area;
     private int worldSize;
 
     Ant(int id, boolean carryingFood, Point position, int worldSize) {
         this.id = id;
         this.carryingFood = carryingFood;
-        this.position = position;
         this.area = new Rectangle((int)position.getX(), (int)position.getY(), 5, 5);
         this.worldSize = worldSize;
-    }
-
-    public boolean isCarryingFood() {
-        return carryingFood;
-    }
-
-    public Point getPosition() {
-        return position;
-    }
-
-    public void setPosition(Point position) {
-        this.position = position;
-    }
-
-    public void setCarryingFood(boolean carryingFood) {
-        this.carryingFood = carryingFood;
     }
 
     public int getId() {
@@ -41,6 +23,14 @@ public class Ant {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public boolean isCarryingFood() {
+        return carryingFood;
+    }
+
+    public void setCarryingFood(boolean carryingFood) {
+        this.carryingFood = carryingFood;
     }
 
     public Rectangle getArea() {
@@ -60,20 +50,20 @@ public class Ant {
         newCoordinates.setSize(5, 5);
         int testedDirections = 0;
         while (
-                (newCoordinates.getLocation().distanceSq(antHillPosition) >= this.position.distanceSq(antHillPosition) ||
-                newCoordinates.getX() == 0 || obstacles.contains(newCoordinates)) &&
+                (newCoordinates.getLocation().distanceSq(antHillPosition) >= this.getArea().getLocation().distanceSq(antHillPosition) ||
+                newCoordinates.getX() == 0 || obstacles.intersects(newCoordinates)) &&
                 testedDirections < 9
                 ) {
             newCoordinates.setLocation(randomDirection());
             testedDirections++;
         }
         while (
-                (newCoordinates.getX() == 0 || obstacles.contains(newCoordinates)) &&
+                (newCoordinates.getX() == 0 || obstacles.intersects(newCoordinates)) &&
                 testedDirections == 8
                 ) {
             newCoordinates.setLocation(randomDirection());
         }
-        this.position.setLocation(newCoordinates.getLocation());
+        this.getArea().setLocation(newCoordinates.getLocation());
     }
 
     /**
@@ -81,7 +71,7 @@ public class Ant {
      */
     public void lookForFood(ArrayList<Pheromone> pheromones, Obstacles obstacles) {
         Point newCoordinates = this.lookForPheromone(pheromones, obstacles);
-        this.position.setLocation(newCoordinates);
+        this.getArea().setLocation(newCoordinates);
     }
 
     public Point lookForPheromone(ArrayList<Pheromone> pheromones, Obstacles obstacles) {
@@ -93,8 +83,8 @@ public class Ant {
         // Array with all possible directions
         ArrayList<Point> directions = new ArrayList<>();
         Rectangle rectangle = new Rectangle();
-        double currentX = this.getPosition().getX();
-        double currentY = this.getPosition().getY();
+        double currentX = this.getArea().getX();
+        double currentY = this.getArea().getY();
         rectangle.setLocation((int) currentX - 40, (int) currentY -40);
         rectangle.setSize(80, 80);
 
@@ -109,20 +99,20 @@ public class Ant {
         if (pheromoneLocation.getX() != 0) {
             int testedDirections = 0;
             while (
-                    (newCoordinates.getLocation().distanceSq(pheromoneLocation) > this.getPosition().distanceSq(pheromoneLocation) ||
-                            obstacles.contains(newCoordinates)) && testedDirections < 9) {
+                    (newCoordinates.getLocation().distanceSq(pheromoneLocation) > this.getArea().getLocation().distanceSq(pheromoneLocation) ||
+                            obstacles.intersects(newCoordinates)) && testedDirections < 9) {
                 newCoordinates.setLocation(randomDirection());
                 testedDirections++;
             }
             // If ant fails to find closer direction
-            while (obstacles.contains(newCoordinates) && testedDirections == 8) {
+            while (obstacles.intersects(newCoordinates) && testedDirections == 8) {
                 newCoordinates.setLocation(randomDirection());
             }
         }
 
         if (pheromoneLocation.getX() == 0) {
             newCoordinates.setLocation(randomDirection());
-            while (obstacles.contains(newCoordinates)) {
+            while (obstacles.intersects(newCoordinates)) {
                 newCoordinates.setLocation(randomDirection());
             }
             return newCoordinates.getLocation();
@@ -147,22 +137,22 @@ public class Ant {
             randY = ThreadLocalRandom.current().nextInt(0, 2 + 1);
             randX = ThreadLocalRandom.current().nextInt(0, 2 + 1);
             if (Math.round(randX) == 0) {
-                posX = this.position.getX() - 1;
+                posX = this.getArea().getX() - 1;
             } else if (Math.round(randX) == 2) {
-                posX = this.position.getX() + 1;
+                posX = this.getArea().getX() + 1;
                 //newCoordinates.setX(this.posX + 5);
             } else {
-                posX = this.position.getX();
+                posX = this.getArea().getX();
             }
 
             if (Math.round(randY) == 0) {
-                posY = this.position.getY() - 1;
+                posY = this.getArea().getY() - 1;
                 //newCoordinates.setY(this.posY - 5);
             } else if (Math.round(randY) == 2) {
-                posY = this.position.getY() + 1;
+                posY = this.getArea().getY() + 1;
                 //newCoordinates.setY(this.posY + 5);
             } else {
-                posY = this.position.getY();
+                posY = this.getArea().getY();
             }
         }
         newCoordinates.setLocation(posX, posY);
@@ -173,7 +163,7 @@ public class Ant {
     public void dropPheromone(ArrayList<Pheromone> pheromones, boolean onFood) {
         boolean emptyPosition = true;
         for (Pheromone pheromone: pheromones) {
-            if (pheromone.getPheromoneArea().contains(this.getPosition())) {
+            if (pheromone.getPheromoneArea().contains(this.getArea())) {
                 emptyPosition = false;
                 pheromone.increaseDuration();
             }
@@ -185,7 +175,7 @@ public class Ant {
             } else {
                 amountPheromones = 30;
             }
-            Pheromone newPheromone = new Pheromone(amountPheromones, new Point(this.getPosition()));
+            Pheromone newPheromone = new Pheromone(amountPheromones, new Point(this.getArea().getLocation()));
             pheromones.add(newPheromone);
         }
     }

@@ -30,19 +30,19 @@ public class Ants {
         this.ants = ants;
     }
 
-    public void move(ArrayList<Pheromone> pheromones, AntHill antHill, BunchOfFood food, Obstacles obstacles) {
+    public void move(ArrayList<Pheromone> pheromones, AntHill antHill, BunchesOfFood foods, Obstacles obstacles) {
         for (Ant ant: this.ants) {
             if (ant.isCarryingFood()) {
                 ant.goBackHome(antHill.getPosition(), obstacles);
                 while (!this.freePosition(ant, this.getAnts())) { // no ant collision && avoid obstacle
                     ant.goBackHome(antHill.getPosition(), obstacles);
                 }
-                if (food.getArea().contains(ant.getPosition())) {
+                if (foods.intersects(ant.getArea())) {
                     ant.dropPheromone(pheromones, true);
                 } else {
                     ant.dropPheromone(pheromones, false);
                 }
-                if (antHill.getArea().contains(ant.getPosition())) {
+                if (antHill.getArea().intersects(ant.getArea())) {
                     antHill.addFood();
                     ant.setCarryingFood(false);
                 }
@@ -52,9 +52,10 @@ public class Ants {
                 while (!freePosition(ant, this.getAnts())) {
                     ant.lookForFood(pheromones, obstacles);
                 }
-                if (food.getArea().contains(ant.getPosition())) {
-                    food.removeFood();
-                    food.setSize();
+                if (foods.intersects(ant.getArea())) {
+                    BunchOfFood bunch = foods.getBunch(ant.getArea());
+                    bunch.removeFood();
+                    bunch.setSize();
                     ant.setCarryingFood(true);
                 }
             }
@@ -64,7 +65,7 @@ public class Ants {
     public boolean freePosition(Ant ant1, ArrayList<Ant> ants) {
         boolean free = true;
         for (Ant ant2: ants) {
-            if (ant2.getPosition().equals(ant1.getPosition()) && ant1.getId() != ant2.getId()) {
+            if (ant2.getArea().getLocation().equals(ant1.getArea().getLocation()) && ant1.getId() != ant2.getId()) {
                 free = false;
             }
         }
