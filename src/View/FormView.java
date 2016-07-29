@@ -1,7 +1,10 @@
+package View;
+
+import Controller.Controller;
 import javax.swing.*;
 import java.awt.*;
 
-public class View extends JFrame{
+public class FormView extends JFrame{
     //Var
     private int windowSize;
     private int numberOfAnts;
@@ -30,7 +33,7 @@ public class View extends JFrame{
     public Boolean getIsValid(){ return isValid; }
 
     //Constructeur
-    View() {
+    public FormView() {
         //Init
         setIsValid(true);
 
@@ -38,7 +41,7 @@ public class View extends JFrame{
         String[] items = {"Petite", "Moyenne", "Grande"};
         JComboBox combo = new JComboBox(items);
 
-        //Input Ants
+        //Input Model.Ants
         JTextField numberOfAntsInput = new JTextField("1");
 
         //Data du panel

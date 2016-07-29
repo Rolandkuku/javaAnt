@@ -1,7 +1,11 @@
+package Controller;
+import View.*;
+import Model.*;
+
 public class Controller {
 
     public void start() {
-        View myView = new View();
+        FormView myView = new FormView();
 
         if(myView.getIsValid()) {
 
@@ -9,7 +13,7 @@ public class Controller {
             simulation.setSize(myView.getWindowSize());
             simulation.setAnts(new Ants(simulation.getSize(), myView.getNumberOfAnts()));
 
-            AntHillView antHillView = new AntHillView(simulation);
+            View.AntHillView antHillView = new View.AntHillView(simulation);
             while (true) {
                 simulation.nextStep();
                 antHillView.paint();
