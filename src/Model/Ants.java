@@ -13,8 +13,8 @@ public class Ants {
                     i,
                     false,
                     new Point(
-                            ThreadLocalRandom.current().nextInt(10, 30 + 1),
-                            ThreadLocalRandom.current().nextInt(200, 250 + 1)
+                            ThreadLocalRandom.current().nextInt(150, 170 + 1),
+                            ThreadLocalRandom.current().nextInt(150, 170 + 1)
                     ),
                     worldSize
             );
