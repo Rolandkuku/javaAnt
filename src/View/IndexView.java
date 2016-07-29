@@ -17,9 +17,9 @@ public class IndexView {
         JComboBox combo = new JComboBox(items);
 
         //Input var
-        JTextField numberOfAntsInput = new JTextField("10");
-        JTextField bunchOfFoodQuantity = new JTextField("30");
-        JTextField numberOfObstacle = new JTextField("30");
+        JTextField numberOfAntsInput = new JTextField("1");
+        JTextField bunchOfFoodQuantity = new JTextField("10");
+        JTextField numberOfObstacle = new JTextField("2");
         JTextField AntHillQuantity = new JTextField("50");
         JTextField AntHillSize = new JTextField("50");
         JTextField obstacleSize = new JTextField("30");

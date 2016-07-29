@@ -7,6 +7,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class BunchesOfFood {
     ArrayList<BunchOfFood> bunches = new ArrayList<>();
+    private int totalFood;
 
     public BunchesOfFood (int nb_bunches, Rectangle anthill, int world_size) {
         for (int i = 0; i < nb_bunches; i++) {
@@ -43,16 +44,23 @@ public class BunchesOfFood {
         return false;
     }
 
-    boolean contains (Rectangle coordinates) {
+  boolean contains (Rectangle coordinates) {
         for (BunchOfFood bunch : this.bunches) {
             if (bunch.getArea().contains(coordinates)) {
                 return true;
             }
         }
         return false;
+    }    
+
+    public int getTotalFood(){
+        for (BunchOfFood bunch : this.bunches){
+            totalFood = totalFood + bunch.getFoodQuantity();
+        }
+        return totalFood;
     }
 
-    BunchOfFood getBunch(Rectangle coordinates) {
+BunchOfFood getBunch(Rectangle coordinates) {
         for (BunchOfFood bunch : this.bunches) {
             if (bunch.getArea().intersects(coordinates)) {
                 return bunch;
@@ -60,6 +68,4 @@ public class BunchesOfFood {
         }
         return new BunchOfFood(new Rectangle());
     }
-
-
 }
