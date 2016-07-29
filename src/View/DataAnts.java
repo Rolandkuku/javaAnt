@@ -17,7 +17,7 @@ public class DataAnts extends JPanel{
 
     public void formView(){
         //Ne s'affiche pas
-        JLabel jlabel = new JLabel("BunchOfFood : ");
+        JLabel jlabel = new JLabel("BunchOfFood : " + simulation.getBunchesOfFood().getTotalFood());
         this.add(jlabel);
     }
 }
