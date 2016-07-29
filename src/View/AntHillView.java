@@ -1,10 +1,6 @@
 package View;
 import Model.*;
 
-import javax.swing.*;
-import java.awt.*;
-import java.util.ArrayList;
-
 public class AntHillView {
     private Simulation simulation;
     private AntWorld antWorld;

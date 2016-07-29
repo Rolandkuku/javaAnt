@@ -1,4 +1,4 @@
-import Controller.Controller;
+import Controller.*;
 
 public class Main {
 

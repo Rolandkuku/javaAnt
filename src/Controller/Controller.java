@@ -1,27 +1,27 @@
 package Controller;
-import View.*;
+
 import Model.*;
 
 public class Controller {
 
+    //Start func
     public void start() {
-        FormView myView = new FormView();
+        Configuration cfg = new Configuration();
 
-        if(myView.getIsValid()) {
+        View.IndexView indexView = new View.IndexView(cfg);
 
-            Simulation simulation = new Simulation();
-            simulation.setSize(myView.getWindowSize());
-            simulation.setAnts(new Ants(simulation.getSize(), myView.getNumberOfAnts()));
+        indexView.formView();
 
-            View.AntHillView antHillView = new View.AntHillView(simulation);
-            while (true) {
-                simulation.nextStep();
-                antHillView.paint();
-                try {
-                    Thread.sleep(10);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+        Simulation simulation = new Simulation(cfg);
+        View.AntHillView antHillView = new View.AntHillView(simulation);
+
+        while (true) {
+            simulation.nextStep();
+            antHillView.paint();
+            try {
+                Thread.sleep(10);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
         }
     }

@@ -10,11 +10,22 @@ import java.util.concurrent.ThreadLocalRandom;
 public class Simulation {
     private int size;
     private Ants ants;
+    private Configuration cfg;
     private BunchOfFood bunchOfFood;
     private AntHill antHill;
     private Obstacle obstacle;
     private ArrayList<Pheromone> pheromones = new ArrayList<>();
 
+    //Constructeur avec la Configuration
+    public Simulation(Configuration cfg){
+        this.size = cfg.getWindowSize();
+        this.ants = new Ants(this.size, cfg.getNumberOfAnts());
+        this.bunchOfFood = new  BunchOfFood(new Point(150, 150), cfg.getBunchOfFoodQuantity());
+        this.antHill = new AntHill(new Point(10, 200), cfg.getAntHillQuantity(), cfg.getAntHillSize());
+        this.obstacle = new Obstacle(new Rectangle(new Point(80, 170)), 50);
+    }
+
+    //Constructeur par default
     public Simulation() {
         this.size = 300;
         this.ants = new Ants(this.size, 1);
