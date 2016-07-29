@@ -9,19 +9,20 @@ public class Controller {
         Configuration cfg = new Configuration();
 
         View.IndexView indexView = new View.IndexView(cfg);
-
         indexView.formView();
 
-        Simulation simulation = new Simulation(cfg);
-        View.AntHillView antHillView = new View.AntHillView(simulation);
+        if(cfg.isValid()) {
+            Simulation simulation = new Simulation(cfg);
+            View.AntHillView antHillView = new View.AntHillView(simulation);
 
-        while (true) {
-            simulation.nextStep();
-            antHillView.paint();
-            try {
-                Thread.sleep(10);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+            while (true) {
+                simulation.nextStep();
+                antHillView.paint();
+                try {
+                    Thread.sleep(10);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }

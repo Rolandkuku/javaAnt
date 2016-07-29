@@ -14,7 +14,7 @@ public class Configuration {
     private Point bunchOfFoodPosition;
 
     //Form validation
-    private boolean isValid = true;
+    private boolean isValid;
 
     //Constructeur avec params
     public Configuration(Point bunchOfFoodPosition, int windowSize,int numberOfAnts, int bunchOfFoodQuantity, int numberOfObstacle, int AntHillQuantity, int AntHillSize, int obstacleSize ){
@@ -34,6 +34,7 @@ public class Configuration {
     }
 
     //Setter
+    public void setIsValid(boolean isValid){ this.isValid = isValid; }
 
     public void setObstacleSize(int obstacleSize){
         this.obstacleSize = obstacleSize;
@@ -69,6 +70,8 @@ public class Configuration {
 
 
     //Getter
+    public boolean isValid() { return this.isValid; }
+
     public Point getBunchOfFoodPosition(){ return this.bunchOfFoodPosition; }
     public int getObstacleSize(){
         return this.obstacleSize;
