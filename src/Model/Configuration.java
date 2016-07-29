@@ -10,21 +10,22 @@ public class Configuration {
     private int numberOfObstacle;
     private int AntHillQuantity;
     private int AntHillSize;
-    private int rectangleSize;
+    private int obstacleSize;
+    private Point bunchOfFoodPosition;
 
     //Form validation
     private boolean isValid = true;
 
     //Constructeur avec params
-    public Configuration(int windowSize,int numberOfAnts, int bunchOfFoodQuantity, int numberOfObstacle, int AntHillQuantity, int AntHillSize, int rectangleSize ){
+    public Configuration(Point bunchOfFoodPosition, int windowSize,int numberOfAnts, int bunchOfFoodQuantity, int numberOfObstacle, int AntHillQuantity, int AntHillSize, int obstacleSize ){
         this.windowSize = windowSize;
         this.numberOfAnts = numberOfAnts;
         this.bunchOfFoodQuantity = bunchOfFoodQuantity;
         this.numberOfObstacle = numberOfObstacle;
         this.AntHillQuantity = AntHillQuantity;
         this.AntHillSize = AntHillSize;
-        this.rectangleSize = rectangleSize;
-
+        this.obstacleSize = obstacleSize;
+        this.bunchOfFoodPosition = bunchOfFoodPosition;
     }
 
     //Constructeur vide
@@ -34,8 +35,8 @@ public class Configuration {
 
     //Setter
 
-    public void setRectangleSize(int rectangleSize){
-        this.rectangleSize = rectangleSize;
+    public void setObstacleSize(int obstacleSize){
+        this.obstacleSize = obstacleSize;
     }
 
     public void setWindowSize(int windowSize){
@@ -44,6 +45,10 @@ public class Configuration {
 
     public void setNumberOfAnts(int numberOfAnts){
         this.numberOfAnts = numberOfAnts;
+    }
+
+    public void setBunchOfFoodPosition(Point bunchOfFoodPosition){
+        this.bunchOfFoodPosition = bunchOfFoodPosition;
     }
 
     public void setAntHillSize(int AntHillSize){
@@ -64,8 +69,9 @@ public class Configuration {
 
 
     //Getter
-    public int getRectangleSize(){
-        return this.rectangleSize;
+    public Point getBunchOfFoodPosition(){ return this.bunchOfFoodPosition; }
+    public int getObstacleSize(){
+        return this.obstacleSize;
     }
 
     public int getWindowSize(){

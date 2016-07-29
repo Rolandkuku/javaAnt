@@ -22,7 +22,7 @@ public class IndexView {
         JTextField numberOfObstacle = new JTextField("50");
         JTextField AntHillQuantity = new JTextField("50");
         JTextField AntHillSize = new JTextField("50");
-        JTextField rectangleSize = new JTextField("50");
+        JTextField obstacleSize = new JTextField("50");
 
         //Panel
         JPanel panel = new JPanel(new GridLayout(0,1));
@@ -45,20 +45,21 @@ public class IndexView {
         panel.add(bunchOfFoodQuantity);
 
         //Input Nombre Obstacle
-        panel.add(new JLabel("Combien d'obstacle :"));
+        panel.add(new JLabel("Nombre d'obstacle :"));
         panel.add(numberOfObstacle);
 
+        //Input size Obstacle
+        panel.add(new JLabel("Taille de(s) l'obstacle(s)"));
+        panel.add(obstacleSize);
+
         //Input Nombre Hill
-        panel.add(new JLabel("Nombre de Hill :"));
+        panel.add(new JLabel("Quantité de nourriture dans les AntHill :"));
         panel.add(AntHillQuantity);
 
-        //Input size Obstacle
-        panel.add(new JLabel("Taille du Hill"));
+        //Input size Anthill
+        panel.add(new JLabel("Taille du AntHill"));
         panel.add(AntHillSize);
 
-        //Input size Rectangle
-        panel.add(new JLabel("Taille du Rectangle"));
-        panel.add(rectangleSize);
 
         int result = JOptionPane.showConfirmDialog(null, panel, "JAVA 3ADW", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
 
@@ -102,11 +103,11 @@ public class IndexView {
             }
 
 
-            if(rectangleSize.getText().equals("")) {
+            if(obstacleSize.getText().equals("")) {
                 JOptionPane.showMessageDialog(panel, "Veuillez entrer une coordonnée valide", "Erreur", JOptionPane.WARNING_MESSAGE);
             }else{
-                String nbAnts = rectangleSize.getText();
-                cfg.setAntHillSize(Integer.parseInt(nbAnts));
+                String nbAnts = obstacleSize.getText();
+                cfg.setObstacleSize(Integer.parseInt(nbAnts));
             }
 
             //Set la taille
