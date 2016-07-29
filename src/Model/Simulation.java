@@ -20,10 +20,13 @@ public class Simulation {
     public Simulation(Configuration cfg){
         this.size = cfg.getWindowSize();
         this.ants = new Ants(this.size, cfg.getNumberOfAnts());
-        this.antHill = new AntHill(new Point(10, 200), cfg.getAntHillQuantity(), cfg.getAntHillSize());
+        this.antHill = new AntHill(
+                new Point(150, 150),
+                cfg.getAntHillQuantity(),
+                cfg.getAntHillSize());
         this.bunchesOfFood = new BunchesOfFood(cfg.getBunchOfFoodQuantity(), this.antHill.getArea(), cfg.getWindowSize());
         this.obstacles = new Obstacles(
-                cfg.getObstacleSize(),
+                cfg.getWindowSize(),
                 cfg.getNumberOfObstacle(),
                 this.antHill.getArea(),
                 this.bunchesOfFood);
