@@ -23,7 +23,7 @@ public class Simulation {
         this.antHill = new AntHill(new Point(10, 200), cfg.getAntHillQuantity(), cfg.getAntHillSize());
         this.bunchesOfFood = new BunchesOfFood(cfg.getBunchOfFoodQuantity(), this.antHill.getArea(), cfg.getWindowSize());
         this.obstacles = new Obstacles(
-                cfg.getWindowSize(),
+                cfg.getObstacleSize(),
                 cfg.getNumberOfObstacle(),
                 this.antHill.getArea(),
                 this.bunchesOfFood);
