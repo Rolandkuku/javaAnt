@@ -1,6 +1,9 @@
 package Controller;
 
 import Model.*;
+import View.DataAnts;
+
+import javax.swing.*;
 
 public class Controller {
 
@@ -14,6 +17,7 @@ public class Controller {
         if(cfg.isValid()) {
             Simulation simulation = new Simulation(cfg);
             View.AntHillView antHillView = new View.AntHillView(simulation);
+            antHillView.dataView();
 
             while (true) {
                 simulation.nextStep();
