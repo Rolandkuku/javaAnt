@@ -1,15 +1,14 @@
 package Model;
 
 import java.awt.*;
+import java.util.ArrayList;
 
 public class Obstacle {
     Rectangle area;
     private int size;
 
-    Obstacle(Rectangle area, int size) {
-        this.size = size;
+    Obstacle(Rectangle area) {
         this.area = area;
-        this.area.setSize(this.size, this.size);
     }
 
     public Rectangle getArea() {
@@ -27,4 +26,5 @@ public class Obstacle {
     public void setSize(int size) {
         this.size = size;
     }
+
 }

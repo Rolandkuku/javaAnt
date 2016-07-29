@@ -21,7 +21,7 @@ public class AntPlayground extends JPanel {
         AntHill antHill = this.simulation.getAntHill();
         Ants ants = this.simulation.getAnts();
         BunchOfFood bunchOfFood = this.simulation.getBunchOfFood();
-        Obstacle obstacle = this.simulation.getObstacle();
+        Obstacles obstacle = this.simulation.getObstacles();
         ArrayList<Pheromone> pheromones = this.simulation.getPheromones();
 
         // AntHill
@@ -42,12 +42,14 @@ public class AntPlayground extends JPanel {
         );
         // Obstacle
         g.setColor(Color.RED);
-        g.fillRect(
-                (int) obstacle.getArea().getLocation().getX(),
-                (int) obstacle.getArea().getLocation().getY(),
-                (int) obstacle.getArea().getWidth(),
-                (int) obstacle.getArea().getHeight()
-        );
+        for (Obstacle obs : this.simulation.getObstacles().getObstacles()) {
+            g.fillRect(
+                    (int) obs.getArea().getLocation().getX(),
+                    (int) obs.getArea().getLocation().getY(),
+                    (int) obs.getArea().getWidth(),
+                    (int) obs.getArea().getHeight()
+            );
+        }
         // Ant
         g.setColor(Color.BLACK);
         for (Ant ant: ants.getAnts()) {

@@ -13,8 +13,8 @@ public class Ants {
                     i,
                     false,
                     new Point(
-                            ThreadLocalRandom.current().nextInt(150, 155 + 1),
-                            ThreadLocalRandom.current().nextInt(150, 155 + 1)
+                            ThreadLocalRandom.current().nextInt(10, 30 + 1),
+                            ThreadLocalRandom.current().nextInt(200, 250 + 1)
                     ),
                     worldSize
             );
@@ -30,12 +30,12 @@ public class Ants {
         this.ants = ants;
     }
 
-    public void move(ArrayList<Pheromone> pheromones, AntHill antHill, BunchOfFood food, Obstacle obstacle) {
+    public void move(ArrayList<Pheromone> pheromones, AntHill antHill, BunchOfFood food, Obstacles obstacles) {
         for (Ant ant: this.ants) {
             if (ant.isCarryingFood()) {
-                ant.goBackHome(antHill.getPosition(), obstacle.getArea());
+                ant.goBackHome(antHill.getPosition(), obstacles);
                 while (!this.freePosition(ant, this.getAnts())) { // no ant collision && avoid obstacle
-                    ant.goBackHome(antHill.getPosition(), obstacle.getArea());
+                    ant.goBackHome(antHill.getPosition(), obstacles);
                 }
                 if (food.getArea().contains(ant.getPosition())) {
                     ant.dropPheromone(pheromones, true);
@@ -48,9 +48,9 @@ public class Ants {
                 }
             } else {
                 // If not, it looks for pheromones
-                ant.lookForFood(pheromones, obstacle.getArea());
+                ant.lookForFood(pheromones, obstacles);
                 while (!freePosition(ant, this.getAnts())) {
-                    ant.lookForFood(pheromones, obstacle.getArea());
+                    ant.lookForFood(pheromones, obstacles);
                 }
                 if (food.getArea().contains(ant.getPosition())) {
                     food.removeFood();
