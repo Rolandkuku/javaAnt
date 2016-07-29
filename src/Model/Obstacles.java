@@ -32,7 +32,7 @@ public class Obstacles {
         return obstacles;
     }
 
-    boolean contains (Point coordinates) {
+    boolean contains (Rectangle coordinates) {
         for (Obstacle obs : this.obstacles) {
             if (obs.getArea().contains(coordinates)) {
                 return true;

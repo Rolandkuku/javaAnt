@@ -22,7 +22,11 @@ public class Simulation {
         this.ants = new Ants(this.size, cfg.getNumberOfAnts());
         this.bunchOfFood = new  BunchOfFood(new Point(150, 150), cfg.getBunchOfFoodQuantity());
         this.antHill = new AntHill(new Point(10, 200), cfg.getAntHillQuantity(), cfg.getAntHillSize());
-        this.obstacles = new Obstacles(cfg.getWindowSize(), 10, this.antHill.getArea(), this.bunchOfFood.getArea());
+        this.obstacles = new Obstacles(
+                cfg.getWindowSize(),
+                cfg.getNumberOfObstacle(),
+                this.antHill.getArea(),
+                this.bunchOfFood.getArea());
     }
 
     //Constructeur par default

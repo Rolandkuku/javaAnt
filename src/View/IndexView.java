@@ -83,8 +83,8 @@ public class IndexView {
             if(numberOfObstacle.getText().equals("")) {
                 JOptionPane.showMessageDialog(panel, "Veuillez entrer un nombre d'obstacle valide", "Erreur", JOptionPane.WARNING_MESSAGE);
             }else{
-                String nbAnts = numberOfObstacle.getText();
-                cfg.setNumberOfObstacle(Integer.parseInt(nbAnts));
+                String nbObs = numberOfObstacle.getText();
+                cfg.setNumberOfObstacle(Integer.parseInt(nbObs));
             }
 
             if(AntHillQuantity.getText().equals("")) {
