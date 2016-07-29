@@ -34,11 +34,12 @@ public class Ants {
         for (Ant ant: this.ants) {
             if (ant.isCarryingFood()) {
                 ant.goBackHome(antHill.getPosition(), obstacles);
-                while (!this.freePosition(ant, this.getAnts())) { // no ant collision && avoid obstacle
+                while (this.intersects(ant)) { // no ant collision && avoid obstacle
                     ant.goBackHome(antHill.getPosition(), obstacles);
                 }
                 if (foods.contains(ant.getArea())) {
                     ant.dropPheromone(pheromones, true);
+                    ant.markFood(pheromones, foods.getBunch(ant.getArea()));
                 } else {
                     ant.dropPheromone(pheromones, false);
                 }
@@ -48,11 +49,13 @@ public class Ants {
                 }
             } else {
                 // If not, it looks for pheromones
-                ant.lookForFood(pheromones, obstacles);
-                while (!freePosition(ant, this.getAnts())) {
-                    ant.lookForFood(pheromones, obstacles);
+                ant.lookForFood(this, pheromones, obstacles);
+                int testedPosition = 0;
+                while (this.intersects(ant) && testedPosition < 9) {
+                    ant.lookForFood(this, pheromones, obstacles);
+                    testedPosition++;
                 }
-                if (foods.intersects(ant.getArea())) {
+                if (foods.contains(ant.getArea())) {
                     BunchOfFood bunch = foods.getBunch(ant.getArea());
                     bunch.removeFood();
                     bunch.setSize();
@@ -70,5 +73,14 @@ public class Ants {
             }
         }
         return free;
+    }
+
+    boolean intersects (Ant ant1) {
+        for (Ant ant2 : this.ants) {
+            if (ant2.getArea().intersects(ant1.getArea()) && ant1.getId() != ant2.getId()) {
+                return true;
+            }
+        }
+        return false;
     }
 }

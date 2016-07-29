@@ -38,7 +38,7 @@ public class Pheromone {
     }
 
     public void increaseDuration() {
-        this.duration += 100;
+        this.duration += 50;
     }
 
     private void decreaseDuration() {
@@ -46,8 +46,9 @@ public class Pheromone {
     }
 
     public void update() {
-        this.duration--;
+        this.duration -= 1;
         this.age++;
     }
+
 }
 

@@ -69,12 +69,12 @@ public class Ant {
     /**
      * Go around randomly
      */
-    public void lookForFood(ArrayList<Pheromone> pheromones, Obstacles obstacles) {
-        Point newCoordinates = this.lookForPheromone(pheromones, obstacles);
+    public void lookForFood(Ants ants, ArrayList<Pheromone> pheromones, Obstacles obstacles) {
+        Point newCoordinates = this.lookForPheromone(ants, pheromones, obstacles);
         this.getArea().setLocation(newCoordinates);
     }
 
-    public Point lookForPheromone(ArrayList<Pheromone> pheromones, Obstacles obstacles) {
+    public Point lookForPheromone(Ants ants, ArrayList<Pheromone> pheromones, Obstacles obstacles) {
 
         Pheromone pheromoneDirection = new Pheromone(0, new Point(0, 0));
         Rectangle newCoordinates = new Rectangle(new Point(0, 0));
@@ -178,5 +178,13 @@ public class Ant {
             Pheromone newPheromone = new Pheromone(amountPheromones, new Point(this.getArea().getLocation()));
             pheromones.add(newPheromone);
         }
+    }
+
+    public void markFood(ArrayList<Pheromone> phs, BunchOfFood food) {
+        Pheromone ph = new Pheromone(
+                900,
+                new Point(food.getArea().getLocation())
+        );
+        phs.add(ph);
     }
 }
