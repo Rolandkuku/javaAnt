@@ -85,8 +85,8 @@ public class Ant {
         Rectangle rectangle = new Rectangle();
         double currentX = this.getArea().getX();
         double currentY = this.getArea().getY();
-        rectangle.setLocation((int) currentX - 40, (int) currentY -40);
-        rectangle.setSize(80, 80);
+        rectangle.setLocation((int) currentX - 20, (int) currentY -20);
+        rectangle.setSize(40, 40);
 
         // Iterate over each direction
         for (Pheromone pheromone: pheromones) {
@@ -163,7 +163,7 @@ public class Ant {
     public void dropPheromone(ArrayList<Pheromone> pheromones, boolean onFood) {
         boolean emptyPosition = true;
         for (Pheromone pheromone: pheromones) {
-            if (pheromone.getPheromoneArea().contains(this.getArea())) {
+            if (pheromone.getPheromoneArea().intersects(this.getArea())) {
                 emptyPosition = false;
                 pheromone.increaseDuration();
             }
@@ -171,9 +171,9 @@ public class Ant {
         if (emptyPosition) {
             int amountPheromones;
             if (onFood) {
-                amountPheromones = 30;
+                amountPheromones = 100;
             } else {
-                amountPheromones = 30;
+                amountPheromones = 100;
             }
             Pheromone newPheromone = new Pheromone(amountPheromones, new Point(this.getArea().getLocation()));
             pheromones.add(newPheromone);

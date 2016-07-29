@@ -43,6 +43,15 @@ public class BunchesOfFood {
         return false;
     }
 
+    boolean contains (Rectangle coordinates) {
+        for (BunchOfFood bunch : this.bunches) {
+            if (bunch.getArea().contains(coordinates)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     BunchOfFood getBunch(Rectangle coordinates) {
         for (BunchOfFood bunch : this.bunches) {
             if (bunch.getArea().intersects(coordinates)) {
@@ -51,4 +60,6 @@ public class BunchesOfFood {
         }
         return new BunchOfFood(new Rectangle());
     }
+
+
 }
