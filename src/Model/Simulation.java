@@ -11,7 +11,7 @@ public class Simulation {
     private int size;
     private Ants ants;
     private Configuration cfg;
-    private BunchOfFood bunchOfFood;
+    private BunchesOfFood bunchesOfFood;
     private AntHill antHill;
     private Obstacles obstacles;
     private ArrayList<Pheromone> pheromones = new ArrayList<>();
@@ -20,20 +20,20 @@ public class Simulation {
     public Simulation(Configuration cfg){
         this.size = cfg.getWindowSize();
         this.ants = new Ants(this.size, cfg.getNumberOfAnts());
-        this.bunchOfFood = new  BunchOfFood(new Point(150, 150), cfg.getBunchOfFoodQuantity());
         this.antHill = new AntHill(new Point(10, 200), cfg.getAntHillQuantity(), cfg.getAntHillSize());
+        this.bunchesOfFood = new BunchesOfFood(cfg.getBunchOfFoodQuantity(), this.antHill.getArea(), cfg.getWindowSize());
         this.obstacles = new Obstacles(
                 cfg.getWindowSize(),
                 cfg.getNumberOfObstacle(),
                 this.antHill.getArea(),
-                this.bunchOfFood.getArea());
+                this.bunchesOfFood);
     }
 
     //Constructeur par default
     public Simulation() {
         this.size = 300;
         this.ants = new Ants(this.size, 1);
-        this.bunchOfFood = new BunchOfFood(new Point(150, 150), 30);
+        //this.bunchOfFood = new BunchOfFood(new Point(150, 150), 30);
         this.antHill = new AntHill(new Point(10, 200), 0, 50);
         //this.obstacles = new Obstacle(new Rectangle(new Point(80, 170)), 50);
     }
@@ -58,12 +58,12 @@ public class Simulation {
         this.ants = ants;
     }
 
-    public BunchOfFood getBunchOfFood() {
-        return bunchOfFood;
+    public BunchesOfFood getBunchesOfFood() {
+        return bunchesOfFood;
     }
 
-    public void setBunchOfFood(BunchOfFood bunchOfFood) {
-        this.bunchOfFood = bunchOfFood;
+    public void setBunchesOfFood(BunchesOfFood bunchesOfFood) {
+        this.bunchesOfFood = bunchesOfFood;
     }
 
     public AntHill getAntHill() {
@@ -99,6 +99,6 @@ public class Simulation {
     public void nextStep() {
         this.updatePheromones(); // Decrease duration of all pheromones
         // If the ant has found any food, it goes back to the antHill
-        this.ants.move(this.pheromones, this.antHill, this.bunchOfFood, this.obstacles);
+        this.ants.move(this.pheromones, this.antHill, this.bunchesOfFood, this.obstacles);
     }
 }

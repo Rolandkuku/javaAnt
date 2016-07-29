@@ -8,7 +8,7 @@ import java.util.concurrent.ThreadLocalRandom;
 public class Obstacles {
     ArrayList<Obstacle> obstacles = new ArrayList<>();
 
-    public Obstacles(int world_size, int nb_obstacles, Rectangle anthill, Rectangle food) {
+    public Obstacles(int world_size, int nb_obstacles, Rectangle anthill, BunchesOfFood foods) {
         for (int i = 0; i < nb_obstacles; i++) {
             Rectangle rect = new Rectangle(
                             ThreadLocalRandom.current().nextInt(0, world_size + 1),
@@ -16,7 +16,7 @@ public class Obstacles {
                             10,
                             10
                     );
-            while (anthill.contains(rect) || food.contains(rect)) {
+            while (anthill.intersects(rect) || foods.intersects(rect)) {
                 rect.setLocation(
                         ThreadLocalRandom.current().nextInt(0, world_size + 1),
                         ThreadLocalRandom.current().nextInt(0, world_size + 1));
@@ -32,9 +32,9 @@ public class Obstacles {
         return obstacles;
     }
 
-    boolean contains (Rectangle coordinates) {
+    boolean intersects (Rectangle coordinates) {
         for (Obstacle obs : this.obstacles) {
-            if (obs.getArea().contains(coordinates)) {
+            if (obs.getArea().intersects(coordinates)) {
                 return true;
             }
         }

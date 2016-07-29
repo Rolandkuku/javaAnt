@@ -1,22 +1,16 @@
 package Model;
 
+
 import java.awt.*;
 
 public class BunchOfFood {
-    private Point position;
     private int foodQuantity;
     private Rectangle area;
 
 
-    BunchOfFood(Point position, int foodQuantity) {
-        this.position = position;
-        this.foodQuantity = foodQuantity;
-        this.area = new Rectangle(
-                (int) this.position.getX(),
-                (int) this.position.getY(),
-                foodQuantity,
-                foodQuantity
-        );
+    BunchOfFood(Rectangle rect) {
+        this.foodQuantity = (int) rect.getWidth();
+        this.area = rect;
     }
 
     public Rectangle getArea() {
@@ -25,14 +19,6 @@ public class BunchOfFood {
 
     public void setArea(Rectangle area) {
         this.area = area;
-    }
-
-    public Point getPosition() {
-        return position;
-    }
-
-    public void setPosition(Point position) {
-        this.position = position;
     }
 
     public int getFoodQuantity() {
